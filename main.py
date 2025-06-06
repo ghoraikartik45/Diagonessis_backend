@@ -52,9 +52,13 @@ async def lifespan(app: FastAPI):
     
     global client, db
     print("Starting FastAPI app...")
-    client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
-    db = client.chat_app
-    print("Connected to MongoDB")
+    try:
+        client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
+        db = client.chat_app
+        print("Connected to MongoDB")
+    except Exception as e:
+        print("staring without mongodb")
+    
     yield
     client.close()
 
