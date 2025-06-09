@@ -52,12 +52,10 @@ async def lifespan(app: FastAPI):
     
     global client, db
     print("Starting FastAPI app...")
-    try:
-        client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
-        db = client.chat_app
-        print("Connected to MongoDB")
-    except Exception as e:
-        print("staring without mongodb")
+    
+    client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
+    db = client.chat_app
+    
     
     yield
     client.close()
@@ -271,7 +269,7 @@ async def status():
         await db.command("ping")
         return {
             "success": True,
-            "message": "API is running",
+            "message": "APP is running",
             "status": "OK"
         }
     except Exception as e:
@@ -285,7 +283,7 @@ async def health():
         await db.command("ping")
         return {
             "success": True,
-            "message": "API is healthy",
+            "message": "APP is healthy",
             "status": "Healthy"
         }
     except Exception as e:
@@ -777,5 +775,6 @@ async def update_profile(request: UpdateUserRequest, current_user: dict = Depend
     }
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import uvicorn 
+    port = int(os.getenv("FASTAPI_PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
