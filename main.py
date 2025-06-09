@@ -314,8 +314,8 @@ async def send_otp(request: SendOTPRequest):
         # Send OTP via email
         await send_email(
             request.email,
-            "Your OTP Code",
-            f"Your OTP code is: {otp}. It will expire in 10 minutes."
+            "DiagonessisAI",
+            f"Your OTP code for DiagonessisAI is: {otp}. It will expire in 10 minutes."
         )
         
         return {
